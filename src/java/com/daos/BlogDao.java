@@ -10,22 +10,24 @@ public class BlogDao {
         boolean status = false;
         Connection con = DbConnection.getConnection();
         try {
+            
             con.setAutoCommit(false);
-            String sql = "insert into Blog (title,contents,date,bid,posterImage,status,reason) values(?,?,?,?,?,?,?)";
+            String sql = "insert into Blog (title,contents,date,bid,posterImage,reason) values(?,?,?,?,?,?)";
             PreparedStatement smt = con.prepareStatement(sql);
             smt.setString(1, blog.getTitle());
             smt.setString(2, blog.getContents());
             smt.setString(3, blog.getDate());
             smt.setInt(4, blog.getBid());
             smt.setString(5,blog.getPosterImage());
-            smt.setString(6, blog.getStatus());
-            smt.setString(7, blog.getReason());
+            smt.setString(6, blog.getReason());
             if (smt.executeUpdate() > 0) {
+                
                 String sql1 = "select id from blog order by id desc limit 1";
                 PreparedStatement smt1 = con.prepareStatement(sql1);
                 ResultSet rs = smt1.executeQuery(sql1);
                 int bid = 0;
                 if (rs.next()) {
+                    
                     bid = rs.getInt("id");
                 }
 
@@ -36,7 +38,10 @@ public class BlogDao {
                     smt3.setInt(2, Integer.parseInt(cid));
                     smt3.executeUpdate();
                 }
+                status=true;
             }
+            
+            con.commit();
             con.close();
             smt.close();
 
@@ -47,7 +52,6 @@ public class BlogDao {
             } catch (Exception ex) {
             }
         }
-
         return status;
     }
 public Blog getBlogById(int id){
@@ -230,5 +234,33 @@ public int getBlogCountByCategory(int cid){
      }
     return count;
 }
+
+public boolean setStatus(String statusValue, String id){
+    boolean status= false;
+    Connection con = DbConnection.getConnection();
+        try {
+           
+            String sql = "update blog set status=? where id=?";
+            PreparedStatement smt = con.prepareStatement(sql);
+            smt.setString(1, statusValue);
+            smt.setString(2, id);
+           
+            if (smt.executeUpdate() > 0) 
+            {
+                status=true;
+            }
+            
+            con.close();
+            smt.close();
+
+        } catch (Exception e) 
+        {
+            System.out.println("Blog status Updation error :" + e.getMessage());
+        
+        }
+            return status;
+   
+}
+
 
 }

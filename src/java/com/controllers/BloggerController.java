@@ -85,6 +85,10 @@ public class BloggerController extends HttpServlet {
                  
                  if( bd.checkUserStatus(blogger) )
                  {
+                     Blogger user = bd.getByLoginDetails( blogger.getUserid() ,blogger.getPassword() );
+                     HttpSession session = request.getSession();
+                      session.setAttribute("user",user);
+          
                     System.out.println("<h1> valid user </h1>");
                     response.sendRedirect("blogger/dashboard.jsp");
                  }
@@ -115,6 +119,8 @@ public class BloggerController extends HttpServlet {
             if(bd.setStatus( statusValue,userid))
             {
              out.println("<h1>Status changed!</h1>");
+             
+             out.println("<a href='admin/pendingBlogger.jsp' >Back to pending list</a>");
             }
             else out.println("<h1>status changing error</h1>");
             

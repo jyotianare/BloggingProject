@@ -4,6 +4,8 @@
     Author     : DELL
 --%>
 
+<%@page import="com.daos.BloggerDao"%>
+<%@page import="com.beans.Blogger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,8 +22,34 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     
+    <%
+        String op=request.getParameter("op");
+        if(op!=null && op.equals("logout")){
+            //session.setAttribute("user", null); 
+            session.removeAttribute("user");
+        }%>
+    
+        
+    
+    
     
     <body class="sb-nav-fixed">
+    
+             <%
+         Blogger user = (Blogger)session.getAttribute("user");
+        //   if(user==null){
+        //    RequestDispatcher rd = request.getRequestDispatcher("signup_signin.jsp");
+        //   rd.forward(request,response);
+        //   }
+           System.out.println("user in dashboard:"+user);
+           System.out.println("user email :" + user.getUserid());
+           System.out.println("user id :" + user.getId());
+           
+         //  BloggerDao bd = new BloggerDao();
+           
+        %>
+    
+        
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <a class="navbar-brand" href="index.html">Start Bootstrap</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
@@ -42,7 +70,7 @@
                         <a class="dropdown-item" href="#">Settings</a>
                         <a class="dropdown-item" href="#">Activity Log</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="login.html">Logout</a>
+                        <a class="dropdown-item" href="bloggerLogin.jsp">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -101,7 +129,7 @@
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="CreateBlog.jsp">
+                            <a class="nav-link" href="CreateBlog.jsp?id=<%= user.getId()  %>">
                                 <div class="sb-nav-link-icon"><i class="fas fa-plus"></i></div>
                                  New Blog
                             </a>

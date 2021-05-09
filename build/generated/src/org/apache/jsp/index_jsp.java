@@ -3,6 +3,7 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import com.beans.Blog;
 import com.daos.BlogDao;
 import java.util.ArrayList;
 import com.daos.CategoryDao;
@@ -45,6 +46,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
+      out.write("\n");
       out.write("\n");
       out.write("\n");
       out.write("\n");
@@ -243,18 +245,29 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                    </div>\n");
       out.write("                    <div class=\"content\">\n");
       out.write("                      <ul>\n");
-      out.write("                        <li><a href=\"post-details.jsp.html\">\n");
-      out.write("                          <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>\n");
-      out.write("                          <span>May 31, 2020</span>\n");
+      out.write("                           ");
+ 
+                     Blog blog = new Blog();          
+                    BlogDao bd = new BlogDao();
+                   ArrayList<Blog> blist =  bd.getRecentBlogs();
+                    
+                    for(Blog b : blist){
+      out.write("\n");
+      out.write("                        <li><a href=\"fullBlog.jsp?id=");
+      out.print( b.getId() );
+      out.write("\">\n");
+      out.write("                          <h5>");
+      out.print( b.getTitle() );
+      out.write("</h5>\n");
+      out.write("                          <span>");
+      out.print( b.getDate() );
+      out.write("</span>\n");
       out.write("                        </a></li>\n");
-      out.write("                        <li><a href=\"post-details.jsp.html\">\n");
-      out.write("                          <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>\n");
-      out.write("                          <span>May 28, 2020</span>\n");
-      out.write("                        </a></li>\n");
-      out.write("                        <li><a href=\"post-details.jsp.html\">\n");
-      out.write("                          <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>\n");
-      out.write("                          <span>May 14, 2020</span>\n");
-      out.write("                        </a></li>\n");
+      out.write("                    \n");
+      out.write("                      ");
+}
+      out.write("\n");
+      out.write("                          \n");
       out.write("                      </ul>\n");
       out.write("                    </div>\n");
       out.write("                  </div>\n");
@@ -268,7 +281,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                     <ul>\n");
       out.write("                    ");
  CategoryDao cd = new CategoryDao();
-                    BlogDao bd = new BlogDao();
+                   
                     ArrayList<Category> clist = cd.getAllCategories();
                     for(Category c : clist){
       out.write("\n");

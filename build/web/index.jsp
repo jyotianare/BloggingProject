@@ -1,3 +1,4 @@
+<%@page import="com.beans.Blog"%>
 <%@page import="com.daos.BlogDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.daos.CategoryDao"%>
@@ -194,18 +195,19 @@ https://templatemo.com/tm-551-stand-blog
                     </div>
                     <div class="content">
                       <ul>
-                        <li><a href="post-details.jsp.html">
-                          <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
-                          <span>May 31, 2020</span>
+                           <% 
+                     Blog blog = new Blog();          
+                    BlogDao bd = new BlogDao();
+                   ArrayList<Blog> blist =  bd.getRecentBlogs();
+                    
+                    for(Blog b : blist){%>
+                        <li><a href="fullBlog.jsp?id=<%= b.getId() %>">
+                          <h5><%= b.getTitle() %></h5>
+                          <span><%= b.getDate() %></span>
                         </a></li>
-                        <li><a href="post-details.jsp.html">
-                          <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
-                          <span>May 28, 2020</span>
-                        </a></li>
-                        <li><a href="post-details.jsp.html">
-                          <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
-                          <span>May 14, 2020</span>
-                        </a></li>
+                    
+                      <%}%>
+                          
                       </ul>
                     </div>
                   </div>
@@ -218,7 +220,7 @@ https://templatemo.com/tm-551-stand-blog
                     <div class="content">
                      <ul>
                     <% CategoryDao cd = new CategoryDao();
-                    BlogDao bd = new BlogDao();
+                   
                     ArrayList<Category> clist = cd.getAllCategories();
                     for(Category c : clist){%>
                     <li><h6><a href="#">- <%=c.getName()%></a> <span class="badge badge-secondary"><%=bd.getBlogCountByCategory(c.getId())%></span></h6></li>
